@@ -4,16 +4,16 @@ import os,io,datetime
 import psycopg2 as pg
 
 print('Started : ',datetime.datetime.now())
-sitrds = pg.connect(host='10.248.150.213',
-                    port='5444',
-                    database='i200gut1',
-                    user='grip_own',
-                    password='changeme')
+sitrds = pg.connect(host='localhost',
+                    port='5432',
+                    database='postgres',
+                    user='postgres',
+                    password='password')
 cursor = sitrds.cursor()
-print("You are connected to SIT RDS atabase(User : grip_own)")
+print("You are connected to database(User : postgres)")
 
-os.chdir("H:\Sprints\mifid\Temporary\BANCS_Identification")
-filename='IDENTIFICATION_20210309.csv'
+os.chdir("")
+filename=''
 p_bsdate=20210109
 p_bccentity='FCA'
 seqnum=1
@@ -46,20 +46,12 @@ def date_to_int(dfc):
 # at a time from the CSV file
 for df in pd.read_csv(filename,sep='|',header=1,names=srccolumns,quotechar='"',chunksize=200000, dtype='unicode'):
     output = io.StringIO() # For Python3 use StringIO
-    df['bid_businessdate']=p_bsdate
-    df['bid_bccentity']=p_bccentity
-    df['bid_sequencenum']=seqnum
 
-    df['EXPRY_DT']=date_to_int(df['EXPRY_DT'])
-    df['EFCTV_DT']=date_to_int(df['EFCTV_DT'])
-    df['DM_LSTUPDDT']=date_to_int(df['DM_LSTUPDDT'])
-
-    print(df['EXPRY_DT'])
     print(df.head(10))
     df.to_csv(output, sep='\t', header=True, index=False)
     output.seek(0) # Required for rewinding the String object
     print("----------")
-    copy_query = "COPY grip_own.tb_d_bancs_identification"+" ("+tgt_col_list+") "+" FROM STDOUT csv DELIMITER '\t' NULL ''  ESCAPE '\\' HEADER "
+    copy_query = "COPY stage_own.<table name>"+" ("+tgt_col_list+") "+" FROM STDOUT csv DELIMITER '\t' NULL ''  ESCAPE '\\' HEADER "
     cursor.copy_expert(copy_query, output)
     sitrds.commit()
     print('Processed : ',datetime.datetime.now())
