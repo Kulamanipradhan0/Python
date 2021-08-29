@@ -7,7 +7,7 @@ starttime=datetime.datetime.now()
 print('Processed : ',starttime)
 print("----------")
 #
-engine = create_engine('postgresql+psycopg2://grip_own:changeme@10.248.150.213:5444/i200gut1')
+engine = create_engine('postgresql+psycopg2://:@:/')
 os.chdir("H:\Sprints\mifid\Temporary")
 filename='REUPRD_20210709_FCA_MICS_P01_20210710042221.csv'
 tablename='py_reuters_product'
