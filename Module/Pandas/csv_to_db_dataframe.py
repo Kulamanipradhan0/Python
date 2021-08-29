@@ -5,16 +5,16 @@ import psycopg2 as pg
 import dask.dataframe as dd
 
 print('Started : ',datetime.datetime.now())
-sitrds = pg.connect(host='10.248.150.213',
-    port='5444',
-    database='i200gut1',
-    user='grip_own',
-    password='changeme')
+sitrds = pg.connect(host='',
+    port='',
+    database='',
+    user='',
+    password='')
 cursor = sitrds.cursor()
 print("You are connected to SIT RDS atabase(User : grip_own)")
 
 os.chdir("H:\Sprints\mifid\Temporary\BANCS_Identification")
-filename='IDENTIFICATION_20210309.csv'
+filename='abc.csv'
 p_bsdate=20210109
 p_bccentity='FCA'
 seqnum=1
